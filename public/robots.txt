@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://missional.io/sitemap-index.xml

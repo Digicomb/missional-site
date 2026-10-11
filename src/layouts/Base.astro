@@ -4,10 +4,26 @@ import '../styles/global.css';
 interface Props {
 	title: string;
 	description: string;
+	image?: string;
 }
 
-const { title, description } = Astro.props;
+const { title, description, image = '/og-image.jpg' } = Astro.props;
 const canonical = new URL(Astro.url.pathname, Astro.site);
+const imageUrl = new URL(image, Astro.site);
+
+// Google Analytics 4. Only loaded on production builds so local previews aren't tracked.
+const gaId = 'G-BV4HXN0W9T';
+const loadAnalytics = import.meta.env.PROD;
+
+const organization = {
+	'@context': 'https://schema.org',
+	'@type': 'Organization',
+	name: 'Missional',
+	url: 'https://missional.io',
+	logo: new URL('/apple-touch-icon.png', Astro.site).href,
+	email: 'hello@missional.io',
+	description,
+};
 ---
 
 <!doctype html>
@@ -18,10 +34,46 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
 		<title>{title}</title>
 		<meta name="description" content={description} />
 		<link rel="canonical" href={canonical} />
+		<link rel="sitemap" href="/sitemap-index.xml" />
+
 		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 		<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
 		<link rel="apple-touch-icon" href="/apple-touch-icon.png" />
 		<meta name="theme-color" content="#0f2236" />
+
+		<meta property="og:type" content="website" />
+		<meta property="og:site_name" content="Missional" />
+		<meta property="og:title" content={title} />
+		<meta property="og:description" content={description} />
+		<meta property="og:url" content={canonical} />
+		<meta property="og:image" content={imageUrl} />
+		<meta property="og:image:width" content="1200" />
+		<meta property="og:image:height" content="630" />
+		<meta property="og:image:alt" content="Missional: Plan, fund and lead mission trips, all in one place." />
+		<meta property="og:locale" content="en_US" />
+
+		<meta name="twitter:card" content="summary_large_image" />
+		<meta name="twitter:title" content={title} />
+		<meta name="twitter:description" content={description} />
+		<meta name="twitter:image" content={imageUrl} />
+
+		<script type="application/ld+json" set:html={JSON.stringify(organization)} />
+
+		{
+			loadAnalytics && (
+				<>
+					<script is:inline async src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`} />
+					<script is:inline define:vars={{ gaId }}>
+						window.dataLayer = window.dataLayer || [];
+						window.gtag = function () {
+							dataLayer.push(arguments);
+						};
+						gtag('js', new Date());
+						gtag('config', gaId);
+					</script>
+				</>
+			)
+		}
 	</head>
 	<body>
 		<slot />
