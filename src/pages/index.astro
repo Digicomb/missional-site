@@ -1,20 +1,200 @@
 ---
-const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+import { Image } from 'astro:assets';
+import Base from '../layouts/Base.astro';
+import logo from '../assets/logo.svg';
+import teamSunset from '../assets/team-sunset.png';
+import field from '../assets/field.png';
+
+const contactEmail = 'hello@missional.io';
+const waitlistHref = `mailto:${contactEmail}?subject=${encodeURIComponent('Missional early access')}`;
+
+const audiences = [
+	{
+		title: 'Churches',
+		body: 'Send short-term teams without juggling spreadsheets, group texts and donation links.',
+		icon: 'M3 21h18M5 21V10l7-5 7 5v11M10 21v-5h4v5M12 2v3',
+	},
+	{
+		title: 'Sending organizations',
+		body: 'Coordinate many teams, partners and projects from one shared view.',
+		icon: 'M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18ZM3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18',
+	},
+	{
+		title: 'Trip leaders',
+		body: 'Keep your team, your budget and your schedule in one place from first meeting to final report.',
+		icon: 'M9 11a4 4 0 1 0 0-8 4 4 0 0 0 0 8ZM2 21v-1a6 6 0 0 1 12 0v1M16 3.5a4 4 0 0 1 0 7.5M22 21v-1a6 6 0 0 0-4-5.6',
+	},
+];
+
+const stages = [
+	{
+		title: 'Raise the Funds',
+		body: 'Give supporters an easy way to give, and keep every gift tied to the right person and trip.',
+		items: ['Crowdfunding pages', 'Accept credit cards', 'Follow up with donors'],
+	},
+	{
+		title: 'Lead the Team',
+		body: 'Bring people in, get them connected and keep everyone on the same page.',
+		items: ['Invite members', 'Connect teams', 'Collaborate'],
+	},
+	{
+		title: 'Manage the Project',
+		body: 'Plan the work before you go, so the field time goes to the mission.',
+		items: ['Project management', 'Manage resources', 'Set milestones and goals'],
+	},
+	{
+		title: 'Complete the Mission',
+		body: 'Stay organized on the ground, and come home with a clear picture of what was accomplished.',
+		items: ['Go to the field', 'Track resources', 'Analyze the impact'],
+	},
+];
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<meta name="viewport" content="width=device-width, initial-scale=1" />
-		<link rel="icon" type="image/svg+xml" href={`${base}/favicon.svg`} />
-		<title>Missional | Mission trip planning software</title>
-		<meta name="description" content="Missional helps churches and sending organizations plan, staff, fund and run mission trips, all in one place." />
-	</head>
-	<body>
-		<main>
-			<h1>Missional</h1>
-			<p>Plan, staff, fund and run mission trips, all in one place.</p>
-			<p>Coming soon.</p>
-		</main>
-	</body>
-</html>
+<Base
+	title="Missional | Mission trip planning software"
+	description="Missional helps churches and sending organizations plan, staff, fund and run mission trips, all in one place."
+>
+	<header class="site-header">
+		<div class="container">
+			<a class="brand" href="/">
+				<Image src={logo} alt="" width={40} height={40} />
+				Missional
+			</a>
+			<nav class="nav" aria-label="Main">
+				<a href="#who">Who it's for</a>
+				<a href="#how">How it works</a>
+				<a class="btn btn-primary" href="#waitlist">Join the waitlist</a>
+			</nav>
+		</div>
+	</header>
+
+	<main>
+		<section class="hero">
+			<Image
+				class="hero-bg"
+				src={teamSunset}
+				alt=""
+				widths={[640, 1140]}
+				sizes="100vw"
+				loading="eager"
+				fetchpriority="high"
+			/>
+			<div class="container">
+				<span class="eyebrow hero-eyebrow">Missions mobilization software</span>
+				<h1>Plan, fund and lead mission trips, all in one place.</h1>
+				<p>
+					Missional helps churches and sending organizations raise support, organize teams, manage the work
+					and measure the impact, from the first meeting to the trip home.
+				</p>
+				<div class="hero-actions">
+					<a class="btn btn-primary" href="#waitlist">Join the waitlist</a>
+					<a class="btn btn-ghost" href="#how">See how it works</a>
+				</div>
+			</div>
+		</section>
+
+		<section class="section" id="who">
+			<div class="container">
+				<div class="section-head">
+					<span class="eyebrow">Who it's for</span>
+					<h2>Built for the people who send</h2>
+					<p class="lead">
+						Whether you send one team a year or dozens, Missional replaces the patchwork of tools that mission
+						trips usually run on.
+					</p>
+				</div>
+				<div class="cards">
+					{
+						audiences.map((a) => (
+							<div class="card">
+								<div class="card-icon" aria-hidden="true">
+									<svg
+										width="24"
+										height="24"
+										viewBox="0 0 24 24"
+										fill="none"
+										stroke="currentColor"
+										stroke-width="1.8"
+										stroke-linecap="round"
+										stroke-linejoin="round"
+									>
+										<path d={a.icon} />
+									</svg>
+								</div>
+								<h3>{a.title}</h3>
+								<p>{a.body}</p>
+							</div>
+						))
+					}
+				</div>
+			</div>
+		</section>
+
+		<section class="section section-soft" id="how">
+			<div class="container">
+				<div class="section-head">
+					<span class="eyebrow">How it works</span>
+					<h2>Every stage of the mission, in one place</h2>
+					<p class="lead">Missional follows a trip from the first dollar raised to the last report written.</p>
+				</div>
+				<ol class="stages" role="list">
+					{
+						stages.map((s, i) => (
+							<li class="stage">
+								<span class="stage-num">STEP {i + 1}</span>
+								<h3>{s.title}</h3>
+								<p>{s.body}</p>
+								<ul>
+									{s.items.map((item) => (
+										<li>{item}</li>
+									))}
+								</ul>
+							</li>
+						))
+					}
+				</ol>
+			</div>
+		</section>
+
+		<section class="section">
+			<div class="container">
+				<div class="banner">
+					<Image src={field} alt="" widths={[640, 1140]} sizes="(max-width: 1120px) 100vw, 1120px" />
+					<div class="banner-body">
+						<h2>Less logistics. More mission.</h2>
+						<p>
+							Trip planning shouldn't take more energy than the trip itself. Missional handles the details so
+							your team can focus on the people you're going to serve.
+						</p>
+					</div>
+				</div>
+			</div>
+		</section>
+
+		<section class="section section-soft cta" id="waitlist">
+			<div class="container">
+				<span class="eyebrow">Early access</span>
+				<h2>Be among the first to use Missional</h2>
+				<p class="lead">
+					We're opening Missional to a small group of churches and sending organizations first. Join the waitlist
+					and we'll be in touch.
+				</p>
+				<a class="btn btn-primary" href={waitlistHref}>Join the waitlist</a>
+				<p class="cta-note">Or email us at <a href={`mailto:${contactEmail}`}>{contactEmail}</a></p>
+			</div>
+		</section>
+	</main>
+
+	<footer class="site-footer">
+		<div class="container">
+			<div>
+				<p class="verse">"Here am I. Send me!"</p>
+				<p>Isaiah 6:8. Until the whole world hears.</p>
+			</div>
+			<div class="footer-meta">
+				<p>&copy; 2026 Missional</p>
+				<p>Powered by <a href="https://digicomb.io">Digicomb</a></p>
+			</div>
+		</div>
+	</footer>
+</Base>
