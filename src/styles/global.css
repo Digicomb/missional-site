@@ -420,6 +420,10 @@ a:focus-visible {
 	text-align: right;
 }
 
+.footer-meta p {
+	margin: 0;
+}
+
 @media (max-width: 760px) {
 	.section {
 		padding: 64px 0;
