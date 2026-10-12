@@ -1,0 +1,117 @@
+---
+import { CONTACT_EMAIL } from '../config';
+---
+
+<form class="waitlist-form" id="waitlist-form" novalidate>
+	<div class="field-row">
+		<div class="field">
+			<label for="wl-name">Name</label>
+			<input id="wl-name" name="name" type="text" autocomplete="name" maxlength="120" />
+		</div>
+		<div class="field">
+			<label for="wl-email">Email <span aria-hidden="true">*</span></label>
+			<input id="wl-email" name="email" type="email" autocomplete="email" maxlength="254" required />
+		</div>
+	</div>
+	<div class="field-row">
+		<div class="field">
+			<label for="wl-org">Church or organization</label>
+			<input id="wl-org" name="organization" type="text" autocomplete="organization" maxlength="160" />
+		</div>
+		<div class="field">
+			<label for="wl-role">I'm a…</label>
+			<select id="wl-role" name="role">
+				<option value="">Choose one</option>
+				<option value="trip_leader">Trip leader</option>
+				<option value="sending_organization">Sending organization</option>
+				<option value="church">Church</option>
+				<option value="other">Other</option>
+			</select>
+		</div>
+	</div>
+
+	<!-- Spam trap: hidden from people, often filled in by bots. -->
+	<div class="hp" aria-hidden="true">
+		<label for="wl-website">Website</label>
+		<input id="wl-website" name="website" type="text" tabindex="-1" autocomplete="off" />
+	</div>
+
+	<button class="btn btn-primary" type="submit">Join the waitlist</button>
+	<p class="form-status" role="status" aria-live="polite"></p>
+	<p class="cta-note">Or email us at <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a></p>
+</form>
+
+<script>
+	import { SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY, CONTACT_EMAIL } from '../config';
+
+	declare global {
+		interface Window {
+			gtag?: (...args: unknown[]) => void;
+		}
+	}
+
+	const form = document.getElementById('waitlist-form') as HTMLFormElement;
+	const status = form.querySelector('.form-status') as HTMLParagraphElement;
+	const button = form.querySelector('button[type="submit"]') as HTMLButtonElement;
+
+	const setStatus = (message: string, kind: 'error' | 'success' | '') => {
+		status.textContent = message;
+		status.dataset.kind = kind;
+	};
+
+	form.addEventListener('submit', async (event) => {
+		event.preventDefault();
+		const data = new FormData(form);
+		const value = (key: string) => String(data.get(key) ?? '').trim();
+
+		// Bots fill the hidden field; pretend it worked and drop it.
+		if (value('website')) {
+			form.reset();
+			setStatus("Thanks! You're on the list.", 'success');
+			return;
+		}
+
+		const email = value('email');
+		const emailInput = form.elements.namedItem('email') as HTMLInputElement;
+		if (!emailInput.checkValidity() || !email) {
+			setStatus('Please enter a valid email address.', 'error');
+			emailInput.focus();
+			return;
+		}
+
+		button.disabled = true;
+		setStatus('Sending…', '');
+
+		try {
+			const response = await fetch(`${SUPABASE_URL}/rest/v1/waitlist`, {
+				method: 'POST',
+				headers: {
+					apikey: SUPABASE_PUBLISHABLE_KEY,
+					'Content-Type': 'application/json',
+					Prefer: 'return=minimal',
+				},
+				body: JSON.stringify({
+					email,
+					name: value('name') || null,
+					organization: value('organization') || null,
+					role: value('role') || null,
+					source: 'homepage',
+				}),
+			});
+
+			// 409 = this email is already on the list; treat it as success.
+			if (!response.ok && response.status !== 409) {
+				throw new Error(`Waitlist signup failed: ${response.status}`);
+			}
+
+			form.reset();
+			setStatus("Thanks! You're on the list. We'll be in touch.", 'success');
+			window.gtag?.('event', 'generate_lead', { form: 'waitlist' });
+		} catch (error) {
+			console.error(error);
+			setStatus(`Something went wrong. Please try again, or email ${CONTACT_EMAIL}.`, 'error');
+		} finally {
+			button.disabled = false;
+		}
+	});
+</script>

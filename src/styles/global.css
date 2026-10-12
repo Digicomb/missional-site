@@ -101,6 +101,7 @@ p {
 	padding: 13px 24px;
 	border-radius: 999px;
 	font-weight: 600;
+	font-family: inherit;
 	font-size: 1rem;
 	text-decoration: none;
 	border: 2px solid transparent;
@@ -444,5 +445,90 @@ a:focus-visible {
 
 	.footer-meta {
 		text-align: left;
+	}
+}
+
+/* Waitlist form */
+.waitlist-form {
+	max-width: 620px;
+	margin: 0 auto;
+	text-align: left;
+}
+
+.field-row {
+	display: grid;
+	grid-template-columns: 1fr 1fr;
+	gap: 16px;
+	margin-bottom: 16px;
+}
+
+.field label {
+	display: block;
+	font-weight: 600;
+	font-size: 0.9rem;
+	color: var(--navy);
+	margin-bottom: 6px;
+}
+
+.field input,
+.field select {
+	width: 100%;
+	font: inherit;
+	color: var(--ink);
+	background: #fff;
+	border: 1px solid var(--line);
+	border-radius: 10px;
+	padding: 11px 14px;
+}
+
+.field input:focus,
+.field select:focus {
+	outline: none;
+	border-color: var(--blue);
+	box-shadow: 0 0 0 3px rgba(31, 99, 176, 0.18);
+}
+
+.waitlist-form .btn {
+	display: block;
+	width: 100%;
+	margin-top: 8px;
+	cursor: pointer;
+}
+
+.waitlist-form .btn:disabled {
+	opacity: 0.65;
+	cursor: wait;
+}
+
+.waitlist-form .cta-note {
+	text-align: center;
+}
+
+.form-status {
+	min-height: 1.6em;
+	margin: 14px 0 0;
+	text-align: center;
+	font-weight: 600;
+}
+
+.form-status[data-kind='success'] {
+	color: #1d7a46;
+}
+
+.form-status[data-kind='error'] {
+	color: #b42318;
+}
+
+.hp {
+	position: absolute;
+	left: -10000px;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
+}
+
+@media (max-width: 600px) {
+	.field-row {
+		grid-template-columns: 1fr;
 	}
 }

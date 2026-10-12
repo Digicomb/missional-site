@@ -4,9 +4,7 @@ import Base from '../layouts/Base.astro';
 import logo from '../assets/logo.svg';
 import teamSunset from '../assets/team-sunset.png';
 import field from '../assets/field.png';
-
-const contactEmail = 'hello@missional.io';
-const waitlistHref = `mailto:${contactEmail}?subject=${encodeURIComponent('Missional early access')}`;
+import WaitlistForm from '../components/WaitlistForm.astro';
 
 const audiences = [
 	{
@@ -179,8 +177,7 @@ const stages = [
 					We're opening Missional to a small group of churches and sending organizations first. Join the waitlist
 					and we'll be in touch.
 				</p>
-				<a class="btn btn-primary" href={waitlistHref}>Join the waitlist</a>
-				<p class="cta-note">Or email us at <a href={`mailto:${contactEmail}`}>{contactEmail}</a></p>
+				<WaitlistForm />
 			</div>
 		</section>
 	</main>
