@@ -1,0 +1,18 @@
+---
+import { Image } from 'astro:assets';
+import logo from '../assets/logo.svg';
+---
+
+<header class="site-header">
+	<div class="container">
+		<a class="brand" href="/">
+			<Image src={logo} alt="" width={40} height={40} />
+			Missional
+		</a>
+		<nav class="nav" aria-label="Main">
+			<a href="/#who">Who it's for</a>
+			<a href="/#how">How it works</a>
+			<a class="btn btn-primary" href="/#waitlist">Join the waitlist</a>
+		</nav>
+	</div>
+</header>

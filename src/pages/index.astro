@@ -1,10 +1,11 @@
 ---
 import { Image } from 'astro:assets';
 import Base from '../layouts/Base.astro';
-import logo from '../assets/logo.svg';
 import teamSunset from '../assets/team-sunset.png';
 import field from '../assets/field.png';
 import WaitlistForm from '../components/WaitlistForm.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
 
 const audiences = [
 	{
@@ -52,19 +53,7 @@ const stages = [
 	title="Missional | Mission trip planning software"
 	description="Missional helps churches and sending organizations plan, staff, fund and run mission trips, all in one place."
 >
-	<header class="site-header">
-		<div class="container">
-			<a class="brand" href="/">
-				<Image src={logo} alt="" width={40} height={40} />
-				Missional
-			</a>
-			<nav class="nav" aria-label="Main">
-				<a href="#who">Who it's for</a>
-				<a href="#how">How it works</a>
-				<a class="btn btn-primary" href="#waitlist">Join the waitlist</a>
-			</nav>
-		</div>
-	</header>
+	<SiteHeader />
 
 	<main>
 		<section class="hero">
@@ -182,16 +171,5 @@ const stages = [
 		</section>
 	</main>
 
-	<footer class="site-footer">
-		<div class="container">
-			<div>
-				<p class="verse">"Here am I. Send me!"</p>
-				<p>Isaiah 6:8. Until the whole world hears.</p>
-			</div>
-			<div class="footer-meta">
-				<p>&copy; 2026 Missional</p>
-				<p>Powered by <a href="https://digicomb.io">Digicomb</a></p>
-			</div>
-		</div>
-	</footer>
+	<SiteFooter />
 </Base>

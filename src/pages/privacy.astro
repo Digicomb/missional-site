@@ -1,0 +1,114 @@
+---
+import Base from '../layouts/Base.astro';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+import { CONTACT_EMAIL } from '../config';
+
+const effectiveDate = 'October 12, 2026';
+---
+
+<Base
+	title="Privacy Policy | Missional"
+	description="How Missional collects, uses and protects information on missional.io."
+>
+	<SiteHeader />
+
+	<main class="section">
+		<article class="container prose">
+			<span class="eyebrow">Legal</span>
+			<h1>Privacy Policy</h1>
+			<p class="prose-meta">Effective {effectiveDate}</p>
+
+			<p>
+				This policy explains what information Missional ("we," "us") collects when you visit missional.io, how
+				we use it, and the choices you have. Missional is powered by <a href="https://digicomb.io">Digicomb</a>.
+			</p>
+
+			<h2>Information we collect</h2>
+			<h3>Information you give us</h3>
+			<p>
+				When you join our waitlist, we collect your email address and, if you choose to provide them, your name,
+				your church or organization, and your role. If you email us, we receive your email address and whatever
+				you include in your message.
+			</p>
+			<h3>Information collected automatically</h3>
+			<p>
+				We use Google Analytics to understand how visitors use the site. Google Analytics uses cookies and
+				similar technologies to collect information such as the pages you view, how you arrived at the site, your
+				browser and device type, and your approximate location (derived from your IP address). Our hosting
+				provider may also record standard server logs, including IP addresses, for security and reliability.
+			</p>
+
+			<h2>How we use information</h2>
+			<ul>
+				<li>To contact you about early access to Missional and related updates.</li>
+				<li>To respond to your questions and requests.</li>
+				<li>To understand how the site is used so we can improve it.</li>
+				<li>To keep the site secure and prevent abuse.</li>
+			</ul>
+			<p>We do not sell your personal information, and we do not use it for third-party advertising.</p>
+
+			<h2>Service providers</h2>
+			<p>We rely on a small number of providers to run this site. They process information on our behalf:</p>
+			<ul>
+				<li><strong>GitHub Pages</strong>: website hosting.</li>
+				<li><strong>Supabase</strong>: secure storage of waitlist signups.</li>
+				<li><strong>Resend</strong>: delivery of internal notification emails about new signups.</li>
+				<li><strong>Google Analytics</strong>: website usage statistics.</li>
+			</ul>
+			<p>
+				We may also disclose information if required by law, or to protect the rights, safety and security of
+				Missional, our users or others.
+			</p>
+
+			<h2>How long we keep it</h2>
+			<p>
+				We keep waitlist information until you ask us to remove it or until we no longer need it to contact you
+				about Missional. Google Analytics data is retained according to the retention settings of our Analytics
+				account.
+			</p>
+
+			<h2>Your choices</h2>
+			<ul>
+				<li>
+					<strong>Remove or update your information:</strong> email <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a> and we'll take care of it.
+				</li>
+				<li>
+					<strong>Unsubscribe:</strong> every email we send about Missional will tell you how to opt out, or you
+					can reply and ask.
+				</li>
+				<li>
+					<strong>Analytics:</strong> you can block or delete cookies in your browser settings, or install the <a href="https://tools.google.com/dlpage/gaoptout">Google Analytics opt-out browser add-on</a>.
+				</li>
+			</ul>
+			<p>
+				Depending on where you live, you may have additional rights to access, correct or delete your personal
+				information. Contact us and we'll respond to your request.
+			</p>
+
+			<h2>Security</h2>
+			<p>
+				We use reasonable safeguards to protect your information. Waitlist signups can be added from the website
+				but cannot be read back through it. No method of transmission or storage is completely secure, however.
+			</p>
+
+			<h2>Children</h2>
+			<p>
+				This site is intended for adults planning and organizing mission work. We do not knowingly collect
+				personal information from children under 13.
+			</p>
+
+			<h2>Changes to this policy</h2>
+			<p>
+				If we update this policy, we'll post the new version here and change the effective date above.
+			</p>
+
+			<h2>Contact us</h2>
+			<p>
+				Questions about this policy? Email <a href={`mailto:${CONTACT_EMAIL}`}>{CONTACT_EMAIL}</a>.
+			</p>
+		</article>
+	</main>
+
+	<SiteFooter />
+</Base>
