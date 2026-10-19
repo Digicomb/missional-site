@@ -1,11 +1,13 @@
 name: Supabase keep-alive
 
 # Free-tier Supabase projects pause after 7 days without activity.
-# This calls the keep_alive() database function twice a week.
+# This writes a heartbeat row in the shared Digicomb project once a day.
+# A second copy runs from Digicomb/digitalhoneycomb-site at a different time,
+# so one repo's skipped or delayed schedule can't let the project pause.
 
 on:
   schedule:
-    - cron: '17 9 * * 1,4' # Mondays and Thursdays, 09:17 UTC
+    - cron: '17 9 * * *' # Daily, 09:17 UTC
   workflow_dispatch:
 
 permissions:
@@ -15,6 +17,7 @@ env:
   # Public, browser-safe values (same as src/config.ts).
   SUPABASE_URL: https://trpfvlxoxsprjzenuhti.supabase.co
   SUPABASE_PUBLISHABLE_KEY: sb_publishable_bCCBqRlktzqNmxtHXv2gRQ_NBcW0Qgr
+  HEARTBEAT_SOURCE: missional-site
 
 jobs:
   ping:
@@ -22,11 +25,19 @@ jobs:
     steps:
       - name: Ping database
         run: |
-          status=$(curl -sS -o response.txt -w '%{http_code}' --max-time 30 \
-            -X POST "$SUPABASE_URL/rest/v1/rpc/keep_alive" \
-            -H "apikey: $SUPABASE_PUBLISHABLE_KEY" \
-            -H "Content-Type: application/json" \
-            -d '{}')
+          ping() {
+            curl -sS -o response.txt -w '%{http_code}' --max-time 30 --retry 3 --retry-all-errors \
+              -X POST "$SUPABASE_URL/rest/v1/rpc/keep_alive" \
+              -H "apikey: $SUPABASE_PUBLISHABLE_KEY" \
+              -H "Content-Type: application/json" \
+              -d "$1"
+          }
+          status=$(ping "{\"source\": \"$HEARTBEAT_SOURCE\"}")
+          # Fallback for the older keep_alive() that takes no arguments.
+          if [ "$status" != 200 ]; then
+            echo "HTTP $status with source: $(cat response.txt); retrying without it"
+            status=$(ping '{}')
+          fi
           echo "HTTP $status: $(cat response.txt)"
           test "$status" = 200
 
