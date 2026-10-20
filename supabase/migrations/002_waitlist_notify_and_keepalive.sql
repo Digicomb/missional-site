@@ -17,7 +17,8 @@ create extension if not exists pg_net with schema extensions;
 --
 -- select vault.create_secret('<your Resend API key, starts with re_>', 'resend_api_key');
 -- select vault.create_secret('<address to notify, e.g. hello@missional.io>', 'waitlist_notify_to');
--- select vault.create_secret('Missional <notifications@missional.io>', 'waitlist_notify_from');
+-- select vault.create_secret('Missional <notifications@digicomb.com>', 'waitlist_notify_from');
+-- (Sent from the shared, Resend-verified digicomb.com domain; the Resend free plan allows only 3 domains.)
 
 create or replace function public.notify_waitlist_signup()
 returns trigger
