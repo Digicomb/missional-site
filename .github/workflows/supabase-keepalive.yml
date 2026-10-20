@@ -1,13 +1,15 @@
 name: Supabase keep-alive
 
 # Free-tier Supabase projects pause after 7 days without activity.
-# This writes a heartbeat row in the shared Digicomb project once a day.
+# This writes a heartbeat row in the shared Digicomb project every 6 hours.
 # A second copy runs from Digicomb/digitalhoneycomb-site at a different time,
 # so one repo's skipped or delayed schedule can't let the project pause.
+# GitHub's schedules are best effort (runs are often late or skipped), hence the
+# frequency: either repo alone gives several attempts a day.
 
 on:
   schedule:
-    - cron: '17 9 * * *' # Daily, 09:17 UTC
+    - cron: '17 */6 * * *' # Every 6 hours at :17 (00:17, 06:17, 12:17, 18:17 UTC)
   workflow_dispatch:
 
 permissions:
